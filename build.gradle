@@ -1,0 +1,46 @@
+
+plugins {
+    id 'java'
+    id 'application'
+    id 'antlr'
+}
+
+group = 'fr.ensta'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+    maven {
+        url = uri("https://maven.openflexo.org/artifactory/openflexo-deps/")
+    }
+}
+
+dependencies {
+    antlr "org.antlr:antlr4:4.13.2"
+    implementation 'org.openflexo:flexo-p2pp:1.6-SNAPSHOT'
+    testImplementation platform('org.junit:junit-bom:5.10.0')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+}
+
+generateGrammarSource {
+    arguments += ['-listener']
+    arguments += ['-visitor']
+    arguments += ['-package', 'fr.ensta.points']
+
+    doLast {
+        copy {
+            from 'build/generated-src/antlr/main/'
+            include '*.*'
+            into 'build/generated-src/antlr/main/fr/ensta/points'
+        }
+        delete fileTree('build/generated-src/antlr/main').include('*.*')
+    }
+}
+
+test {
+    useJUnitPlatform()
+}
+
+application {
+    mainClass = 'fr.ensta.points.Main'
+}
