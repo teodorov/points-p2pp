@@ -6,14 +6,14 @@ import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeProperty;
 import org.openflexo.p2pp.RawSource;
 
-public class PointsSyntaxBuilder extends PointsBaseListener {
+public class PointsAbstractSyntaxBuilder extends PointsBaseListener {
     ParseTreeProperty<Object> values = new ParseTreeProperty<>();
     RawSource rawSource;
-    public PointsSyntaxBuilder(RawSource rawSource) {
+    public PointsAbstractSyntaxBuilder(RawSource rawSource) {
         this.rawSource = rawSource;
     }
 
-    Object getEntry(ParseTree ctx) {
+    public Object getEntry(ParseTree ctx) {
         return values.get(ctx);
     }
 

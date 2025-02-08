@@ -21,6 +21,14 @@ public class PointListP2PP extends P2PPNode<PointsParser.PointsContext, PointLis
         modelObject = buildModelObjectFromAST(astNode);
     }
 
+    public PointListP2PP(PointList point) {
+        super(point, null, null);
+        modelObject = point;
+        for (Point p : point.points()) {
+            addToChildren(new PointP2PP(p));
+        }
+    }
+
     @Override
     public PointList buildModelObjectFromAST(PointsParser.PointsContext pointsContext) {
         var points = pointsContext.point().stream().map((pc) -> {
@@ -51,13 +59,13 @@ public class PointListP2PP extends P2PPNode<PointsParser.PointsContext, PointLis
 
     @Override
     public <C> P2PPNode<?, C> makeObjectNode(C c) {
-//        if (c instanceof PointsParser.PointsContext) {
+//        if (c instanceof PointList) {
 //            //noinspection unchecked
-//            return (P2PPNode<?, C>) new PointListP2PP(antlr2pp, (PointsParser.PointsContext) c, this.fragmentRetriever);
+//            return (P2PPNode<?, C>) new PointListP2PP((PointList) c);
 //        }
-//        if (c instanceof PointsParser.PointContext) {
+//        if (c instanceof Point) {
 //            //noinspection unchecked
-//            return (P2PPNode<?, C>) new PointP2PP(antlr2pp, (PointsParser.PointContext) c, this.fragmentRetriever);
+//            return (P2PPNode<?, C>) new PointP2PP((Point) c);
 //        }
         System.err.println("Not supported: " + c);
         Thread.dumpStack();
